@@ -10,7 +10,7 @@ public class PlayerObject {
 	private String textureLocation; 
 	private String blanktexture="res/blankSprite.png";
 	private boolean isGrounded;
-	float  velocityY; 
+	float  velocityY= (float) -.3;
 	float gravity=(float) -.5;
 	public PlayerObject() {  
 		
@@ -23,33 +23,7 @@ public class PlayerObject {
 		 this.height=height;
 		 this.centre =centre;
 	}
-    public void jumpLogic() {
-
-    	if(centre.getY()>800&&velocityY>0) {			
-			velocityY=0;
-		}    
-		if(centre.getY()<800) {
-				velocityY-=gravity;			
-		}
-		if(velocityY<0) {
-			velocityY-=gravity;	
-		}
-    	    }
-    public void update() {
-		groundLogic();
-		jumpLogic();
-		centre.setY(centre.getY()+velocityY);
-		
-	}
-	public void groundLogic(){
-		if(isGrounded&&velocityY<0){
-			gravity=0;
-			velocityY= (float) .01;
-		}
-		if(!isGrounded){
-			gravity= (float) -.5;
-		}
-	}
+   
     public float getVelocity() {
     	return velocityY;
     }

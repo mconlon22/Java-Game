@@ -38,7 +38,7 @@ public class Model {
 	 private  CopyOnWriteArrayList<GameObject> EnemiesList  = new CopyOnWriteArrayList<GameObject>();
 	 private  CopyOnWriteArrayList<GameObject> BulletList  = new CopyOnWriteArrayList<GameObject>();
 	 private  CopyOnWriteArrayList<GameObject> FloorList  = new CopyOnWriteArrayList<GameObject>();
-
+	private float gravity=(float) -.5;
 	 private int Score=0; 
 		public Model() {
 		 //setup game world 
@@ -60,6 +60,8 @@ public class Model {
 	public void gamelogic() 
 	{
 		// Player Logic first 
+		floorLogic();
+		gravityLogic();
 		playerLogic(); 
 		// Enemy Logic next
 		enemyLogic();
@@ -68,8 +70,8 @@ public class Model {
 		// interactions between objects 
 		gameLogic(); 
 
-		floorLogic();
-	   
+
+
 	}
 
 	private void gameLogic() { 
@@ -96,6 +98,7 @@ public class Model {
 		
 	}
 	private void floorLogic() {
+		if(Player.getVelocity()<0){
 		boolean grounded=false;
 		for(GameObject floor:FloorList){
 			if ((floor.getCentre().getY()-Player.getCentre().getY()<10&&floor.getCentre().getY()-Player.getCentre().getY()>-10)&&((floor.getCentre().getX()-Player.getCentre().getX()<10)&&floor.getCentre().getX()+Player.getCentre().getX()>-10)){
@@ -105,6 +108,7 @@ public class Model {
 			}
 		}
 		Player.setGrounded(grounded);
+	}
 		
 		
 	}
@@ -184,19 +188,27 @@ public class Model {
 			Controller.getInstance().setKeySpacePressed(false);
 		} 
 		
-		Player.update();
 		
 	}
-
-	private void CreateBullet() {
-		BulletList.add(new GameObject("/Users/martinconlon/Desktop/web/BasicGameTemplate-Final-1-/BasicGameTemplate Final/res/Bullet.png",32,64,new Point3f(Player.getCentre().getX(),Player.getCentre().getY(),0.0f)));
-		
-	}
-	private void Jump() {
-		if(Player.getVelocity()==0){
-		Player.setYVelocity(-20);
+	private void gravityLogic(){
+		if(!Player.isGrounded()){
+		   
+		if(Player.getCentre().getY()<600) {
+				Player.setYVelocity(Player.getVelocity()-gravity);			
+				Player.getCentre().setY(Player.getCentre().getY()+Player.getVelocity());
 		}
 	}
+	
+		}
+		private void CreateBullet() {
+			BulletList.add(new GameObject("/Users/martinconlon/Desktop/web/BasicGameTemplate-Final-1-/BasicGameTemplate Final/res/Bullet.png",32,64,new Point3f(Player.getCentre().getX(),Player.getCentre().getY(),0.0f)));
+			
+		}
+		private void Jump() {
+			if(Player.getVelocity()==0){
+			Player.setYVelocity(-20);
+			}
+		}
 
 	public PlayerObject getPlayer() {
 		return Player;
