@@ -37,19 +37,21 @@ public class Model {
 	 private Controller controller = Controller.getInstance();
 	 private  CopyOnWriteArrayList<GameObject> EnemiesList  = new CopyOnWriteArrayList<GameObject>();
 	 private  CopyOnWriteArrayList<GameObject> BulletList  = new CopyOnWriteArrayList<GameObject>();
-	 private int Score=0; 
+	 private  CopyOnWriteArrayList<GameObject> FloorList  = new CopyOnWriteArrayList<GameObject>();
 
-	public Model() {
+	 private int Score=0; 
+		public Model() {
 		 //setup game world 
 		//Player 
-		Player= new PlayerObject("res/Lightning.png",50,50,new Point3f(500,500,0));
+		Player= new PlayerObject("/Users/martinconlon/Desktop/web/BasicGameTemplate-Final-1-/BasicGameTemplate Final/res/Lightning.png",50,50,new Point3f(500,500,0));
 		//Enemies  starting with four 
 		
-		EnemiesList.add(new GameObject("res/preg.png",80,80,new Point3f(0,((float)Math.random()*50+400 ),0))); 
-		EnemiesList.add(new GameObject("res/preg.png",80,80,new Point3f(0,((float)Math.random()*50+500 ),0)));
-		EnemiesList.add(new GameObject("res/preg.png",80,80,new Point3f(0,((float)Math.random()*100+500 ),0)));
-		EnemiesList.add(new GameObject("res/preg.png",80,80,new Point3f(0,((float)Math.random()*100+400 ),0)));
-		
+		EnemiesList.add(new GameObject("/Users/martinconlon/Desktop/web/BasicGameTemplate-Final-1-/BasicGameTemplate Final/res/preg.png",80,80,new Point3f(0,((float)Math.random()*50+400 ),0))); 
+		EnemiesList.add(new GameObject("/Users/martinconlon/Desktop/web/BasicGameTemplate-Final-1-/BasicGameTemplate Final/res/preg.png",80,80,new Point3f(0,((float)Math.random()*50+500 ),0)));
+		EnemiesList.add(new GameObject("/Users/martinconlon/Desktop/web/BasicGameTemplate-Final-1-/BasicGameTemplate Final/res/preg.png",80,80,new Point3f(0,((float)Math.random()*100+500 ),0)));
+		EnemiesList.add(new GameObject("/Users/martinconlon/Desktop/web/BasicGameTemplate-Final-1-/BasicGameTemplate Final/res/preg.png",80,80,new Point3f(0,((float)Math.random()*100+400 ),0)));
+		FloorList.add(new GameObject("/Users/martinconlon/Desktop/web/BasicGameTemplate-Final-1-/BasicGameTemplate Final/res/preg.png",80,80,new Point3f(50,600,0)));
+	
 		
 	    
 	}
@@ -65,6 +67,8 @@ public class Model {
 		bulletLogic();
 		// interactions between objects 
 		gameLogic(); 
+
+		floorLogic();
 	   
 	}
 
@@ -91,6 +95,19 @@ public class Model {
 		}
 		
 	}
+	private void floorLogic() {
+		boolean grounded=false;
+		for(GameObject floor:FloorList){
+			if ((floor.getCentre().getY()-Player.getCentre().getY()<10&&floor.getCentre().getY()-Player.getCentre().getY()>-10)&&((floor.getCentre().getX()-Player.getCentre().getX()<10)&&floor.getCentre().getX()+Player.getCentre().getX()>-10)){
+				System.out.println("grounded");
+				grounded=true;
+				break;
+			}
+		}
+		Player.setGrounded(grounded);
+		
+		
+	}
 
 	private void enemyLogic() {
 		// TODO Auto-generated method stub
@@ -115,7 +132,7 @@ public class Model {
 		{
 			while (EnemiesList.size()<6)
 			{
-				EnemiesList.add(new GameObject("res/preg.png",80,80,new Point3f(0,((float)Math.random()*1000),0))); 
+				EnemiesList.add(new GameObject("/Users/martinconlon/Desktop/web/BasicGameTemplate-Final-1-/BasicGameTemplate Final/res/preg.png",80,80,new Point3f(0,((float)Math.random()*1000),0))); 
 			}
 		}
 	}
@@ -172,13 +189,13 @@ public class Model {
 	}
 
 	private void CreateBullet() {
-		BulletList.add(new GameObject("res/Bullet.png",32,64,new Point3f(Player.getCentre().getX(),Player.getCentre().getY(),0.0f)));
+		BulletList.add(new GameObject("/Users/martinconlon/Desktop/web/BasicGameTemplate-Final-1-/BasicGameTemplate Final/res/Bullet.png",32,64,new Point3f(Player.getCentre().getX(),Player.getCentre().getY(),0.0f)));
 		
 	}
 	private void Jump() {
-		if(Player.getVelocity()==0)
+		if(Player.getVelocity()==0){
 		Player.setYVelocity(-20);
-		
+		}
 	}
 
 	public PlayerObject getPlayer() {
@@ -195,6 +212,14 @@ public class Model {
 
 	public int getScore() { 
 		return Score;
+	}
+
+	public CopyOnWriteArrayList<GameObject> getFloorList() {
+		return FloorList;
+	}
+
+	public void setFloorList(CopyOnWriteArrayList<GameObject> floorList) {
+		FloorList = floorList;
 	}
  
 

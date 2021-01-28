@@ -24,6 +24,7 @@ public class PlayerObject {
 		 this.centre =centre;
 	}
     public void jumpLogic() {
+
     	if(centre.getY()>800&&velocityY>0) {			
 			velocityY=0;
 		}    
@@ -33,11 +34,22 @@ public class PlayerObject {
 		if(velocityY<0) {
 			velocityY-=gravity;	
 		}
-    	centre.setY(centre.getY()+velocityY);    }
+    	    }
     public void update() {
-    	jumpLogic();
+		groundLogic();
+		jumpLogic();
+		centre.setY(centre.getY()+velocityY);
 		
-    }
+	}
+	public void groundLogic(){
+		if(isGrounded&&velocityY<0){
+			gravity=0;
+			velocityY= (float) .01;
+		}
+		if(!isGrounded){
+			gravity= (float) -.5;
+		}
+	}
     public float getVelocity() {
     	return velocityY;
     }
@@ -74,6 +86,10 @@ public class PlayerObject {
 			}
 		 
 		return blanktexture; 
+	}
+
+	public void setGrounded(boolean isGrounded) {
+		this.isGrounded = isGrounded;
 	}
   
 }
