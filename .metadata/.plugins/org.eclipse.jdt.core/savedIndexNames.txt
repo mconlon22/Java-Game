@@ -1,0 +1,3 @@
+INDEX VERSION 1.131+D:\Downloads\BasicGameTemplate Final (1)\.metadata\.plugins\org.eclipse.jdt.core
+113558702.index
+2790442999.index
